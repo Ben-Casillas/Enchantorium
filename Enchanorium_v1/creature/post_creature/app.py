@@ -23,11 +23,11 @@ def lambda_handler(event, context):
     price = event["price"]
     quantity = event["quantity"]
 
-    insert(creature_id, name, age, weight, ship_from, description, price, quantity)
+    insert(creature_id, name, age, weight, ship_from, description, type, price, quantity)
     return response(200, {"ID": creature_id})
 
 
-def insert(creature_id, name, age, weight, ship_from, description, price, quantity):
+def insert(creature_id, name, age, weight, ship_from, description, type, price, quantity):
     enchantorium_creatures.put_item(Item ={
         "ID": creature_id,
         "name": name,
@@ -35,6 +35,7 @@ def insert(creature_id, name, age, weight, ship_from, description, price, quanti
         "weight": weight,
         "ship_from": ship_from,
         "description": description,
+        "type": type,
         "price": price,
         "quantity": quantity
     })
