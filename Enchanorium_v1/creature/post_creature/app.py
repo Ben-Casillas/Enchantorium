@@ -13,26 +13,31 @@ def lambda_handler(event, context):
         event = json.loads(event["body"])
 
     creature_id = str(uuid64())
+    #seller id potentially not sure how to handle that just yet
     name = event["name"]
     age = event["age"]
     weight = event["weight"]
-    loc_found = event["loc_found"]
-    achievements = event["achievements"]
+    ship_from = event["ship_from"]
+    description = event["description"]
+    type = event["type"]
     price = event["price"]
+    quantity = event["quantity"]
 
-    insert(creature_id, name, age, weight, loc_found, achievements, price)
+    insert(creature_id, name, age, weight, ship_from, description, type, price, quantity)
     return response(200, {"ID": creature_id})
 
 
-def insert(creature_id, name, age, weight, loc_found, achievements, price):
+def insert(creature_id, name, age, weight, ship_from, description, type, price, quantity):
     enchantorium_creatures.put_item(Item ={
         "ID": creature_id,
         "name": name,
         "age": age,
         "weight": weight,
-        "loc_found": loc_found,
-        "achievements": achievements,
-        "price": price
+        "ship_from": ship_from,
+        "description": description,
+        "type": type,
+        "price": price,
+        "quantity": quantity
     })
 
 def response(code, body):
