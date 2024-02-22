@@ -5,7 +5,7 @@ from uuid import uuid4
 import json
 
 region_name = getenv('APP_REGION')
-enchantorium_creatures = boto3.resource('dynamodb', region_name=region_name ).Table('Audition_Performances')
+enchantorium_creatures = boto3.resource('dynamodb', region_name=region_name ).Table('Enchantorium_Creatures')
 
 def lambda_handler(event, context):
     if (("body" in event)):

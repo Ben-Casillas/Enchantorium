@@ -5,38 +5,209 @@ Description: >
 
   Sample SAM Template for EnchantoriumSAM
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 3
     MemorySize: 128
 
-Resources:
-  HelloWorldFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-    Properties:
-      CodeUri: hello_world/
-      Handler: app.lambda_handler
-      Runtime: python3.9
-      Architectures:
-        - x86_64
-      Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /hello
-            Method: get
+  Api:
+    Cors:
+      AllowMethods: "'GET,POST,DELETE,PUT,OPTIONS'"
+      AllowHeaders: "'content-type'"
+      AllowOrigin: "'*'"
 
-Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+Resources:
+# User
+  CreateUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/user/post_user/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Enchantorium_Users
+    Events:
+      CreateUser:
+        Type: Api
+        Properties:
+          Path: /user
+          Method: post
+
+  GetUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/user/get_user/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Enchantorium_Users
+    Events:
+      CreateUser:
+        Type: Api
+        Properties:
+          Path: /user
+          Method: get
+
+  PutUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/user/put_user/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Enchantorium_Users
+    Events:
+      CreateUser:
+        Type: Api
+        Properties:
+          Path: /user
+          Method: put
+
+  DeleteUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/user/delete_user/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Enchantorium_Users
+    Events:
+      CreateUser:
+        Type: Api
+        Properties:
+          Path: /user
+          Method: delete
+
+# Creature
+  CreateCreatureFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/creature/post_creature/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Enchantorium_Creatures
+    Events:
+      CreateCreature:
+        Type: Api
+        Properties:
+          Path: /creature
+          Method: post
+
+  GetCreatureFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/creature/get_creature/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Enchantorium_Creatures
+    Events:
+      CreateCreature:
+        Type: Api
+        Properties:
+          Path: /creature
+          Method: get
+
+  PutCreatureFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/creature/put_creature/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Enchantorium_Creatures
+    Events:
+      CreateCreature:
+        Type: Api
+        Properties:
+          Path: /creature
+          Method: put
+
+  DeleteCreatureFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/creature/delete_creature/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Enchantorium_Creatures
+    Events:
+      CreateCreature:
+        Type: Api
+        Properties:
+          Path: /creature
+          Method: delete
+  
+# Weapon
+  CreateWeaponFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/weapon/post_weapon/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Enchantorium_Weapons
+    Events:
+      CreateWeapon:
+        Type: Api
+        Properties:
+          Path: /weapon
+          Method: post
+
+  GetWeaponFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/weapon/get_weapon/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Enchantorium_Weapons
+    Events:
+      CreateWeapon:
+        Type: Api
+        Properties:
+          Path: /weapon
+          Method: get
+
+  PutWeaponFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/weapon/put_weapon/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Enchantorium_Weapons
+    Events:
+      CreateWeapon:
+        Type: Api
+        Properties:
+          Path: /weapon
+          Method: put
+
+  DeleteWeaponFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/weapon/delete_weapon/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Enchantorium_Weapons
+    Events:
+      CreateWeapon:
+        Type: Api
+        Properties:
+          Path: /weapon
+          Method: delete

@@ -9,8 +9,15 @@ region_name = getenv('APP_REGION')
 enchantorium_users = boto3.resource('dynamodb', region_name=region_name ).Table('Enchantorium_Users')
 
 def lambda_handler(event, context):
-    user_id = str(uuid64())
-    d
+    user_id = str(uuid4())
+
+    username = event["username"]
+    password = event["password"]
+    email = event["email"]
+    addresses = event["addresses"]
+    banking = event["banking"]
+    title = event["title"]
+
     
     db_insert(user_id, username, password, email, addresses, banking, title)
     return response(200, {"ID": user_id, "Status": "User added, welcome in"})
