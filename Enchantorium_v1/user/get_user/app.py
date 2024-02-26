@@ -4,7 +4,7 @@ from os import getenv
 from uuid import uuid4
 import json
 
-#DONE
+#WORKING
 region_name = getenv('APP_REGION')
 enchantorium_users = boto3.resource('dynamodb', region_name=region_name ).Table('Enchantorium_Users')
 
@@ -18,7 +18,7 @@ def lambda_handler(event, context):
             output = enchantorium_users.get_item(Key={"ID":id})["Item"]
             return response(200, output)
     return response(200, enchantorium_users.scan()["Items"])
-
+h
 
 def response(code, body):
     return {
@@ -27,5 +27,4 @@ def response(code, body):
             "Content-Type": "application/json"
             },
         "body": json.dumps(body),
-        "isBase64Encoded": False
     }

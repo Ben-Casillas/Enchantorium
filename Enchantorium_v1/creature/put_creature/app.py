@@ -4,6 +4,7 @@ from os import getenv
 from uuid import uuid4
 import json
 
+#WORKING
 region_name = getenv('APP_REGION')
 enchantorium_creatures = boto3.resource('dynamodb', region_name=region_name ).Table('Enchantorium_Creatures')
 
