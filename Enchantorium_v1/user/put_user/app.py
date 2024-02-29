@@ -4,8 +4,9 @@ from os import getenv
 from uuid import uuid4
 import json
 
+#WORKING
 region_name = getenv('APP_REGION')
-enchantorium_users = boto3.resource('dynamodb', region_name=region_name ).Table('Audition_Users')
+enchantorium_users = boto3.resource('dynamodb', region_name=region_name ).Table('Enchantorium_Users')
 
 def lambda_handler(event, context):
     if(("body" in event)):
@@ -14,28 +15,28 @@ def lambda_handler(event, context):
     username = event["username"]
     password = event["password"]
     email = event["email"]
-    addresses = event["address"] 
+    addresses = event["addresses"] 
     banking = event["banking"]
     title = event["title"]
 
-    if "ID" is not event or id is None:
+    if "ID" not in event or id is None:
         response(400, "ID is required")
 
-    user = enchantorium_users.get_key(Key= {"ID":id})["Item"]
+    user = enchantorium_users.get_item(Key={"ID":id})["Item"]
 
     if user is None:
         response(404, "No such user found")
-    if username is None:
+    if username is not None:
         user["username"] = username
-    if password is None:
+    if password is not None:
         user["password"] = password
-    if email is None:
+    if email is not None:
         user["email"] = email
-    if addresses is None:
+    if addresses is not None:
         user["addresses"] = addresses
-    if banking is None:
+    if banking is not None:
         user["banking"] = banking
-    if title is None:
+    if title is not None:
         user["title"] = title
 
     enchantorium_users.put_item(Item=user)

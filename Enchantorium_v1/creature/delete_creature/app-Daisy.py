@@ -4,10 +4,8 @@ from os import getenv
 from uuid import uuid4
 import json
 
-#WORKING
 region_name = getenv('APP_REGION')
-enchantorium_users = boto3.resource('dynamodb', region_name=region_name ).Table('Enchantorium_Users')
-
+enchantorium_creatures = boto3.resource('dynamodb', region_name=region_name ).Table('Enchantorium_Creatures')
 
 def lambda_handler(event, context):
     if "pathParameters" not in event:    
@@ -16,7 +14,7 @@ def lambda_handler(event, context):
     if path is None or "ID" not in path:
         return response(400, "No ID found")
     id = path["ID"]
-    output = enchantorium_users.delete_item(Key={"ID":id})
+    output = enchantorium_creatures.delete_item(Key={"ID":id})
     return response(200, output)
     
 
