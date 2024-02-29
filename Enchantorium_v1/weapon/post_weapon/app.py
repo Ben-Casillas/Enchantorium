@@ -11,7 +11,7 @@ enchantorium_weapons = boto3.resource('dynamodb', region_name=region_name ).Tabl
 def lambda_handler(event, context):
     if("parhParameters" in event):
         path = event["pathParameters"]
-        trinket_id = str(uuid64())
+        trinket_id = str(uuid4())
         name = event["name"]
         trinket_type = event["type"] # so like knife, gun, "AOE" which is a friggin bomb, misc, so like ways to administer their secondary effect
         secondary_effect = event["secondary_effect"] # the "ebola" part to the "ebola knife"

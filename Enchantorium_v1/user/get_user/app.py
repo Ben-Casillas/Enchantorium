@@ -18,7 +18,7 @@ def lambda_handler(event, context):
             output = enchantorium_users.get_item(Key={"ID":id})["Item"]
             return response(200, output)
     return response(200, enchantorium_users.scan()["Items"])
-
+h
 
 def response(code, body):
     return {
