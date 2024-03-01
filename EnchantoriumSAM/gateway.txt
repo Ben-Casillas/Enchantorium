@@ -1,0 +1,93 @@
+
+  # Single API Gateway
+  # EnchantoriumApi:
+  #   Type: AWS::Serverless::Api
+  #   Properties:
+  #     StageName: Testing
+  #     DefinitionBody:
+  #       swagger: "2.0"
+  #       info:
+  #         title: "Enchantorium API"
+  #       paths:
+  #         /user:
+  #           post:
+  #             x-amazon-apigateway-integration:
+  #               uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateUserFunction.Arn}/invocations"
+  #               passthroughBehavior: "when_no_match"
+  #               httpMethod: "POST"
+  #               type: "aws_proxy"
+  #           get:
+  #             x-amazon-apigateway-integration:
+  #               uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetUserFunction.Arn}/invocations"
+  #               passthroughBehavior: "when_no_match"
+  #               httpMethod: "GET"
+  #               type: "aws_proxy"
+  #           put:
+  #             x-amazon-apigateway-integration:
+  #               uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutUserFunction.Arn}/invocations"
+  #               passthroughBehavior: "when_no_match"
+  #               httpMethod: "PUT"
+  #               type: "aws_proxy"
+  #           delete:
+  #             x-amazon-apigateway-integration:
+  #               uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteUserFunction.Arn}/invocations"
+  #               passthroughBehavior: "when_no_match"
+  #               httpMethod: "delete"
+  #               type: "aws_proxy"
+  #         /user/{ID}:
+  #           get:
+  #             x-amazon-apigateway-integration:
+  #               uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetUserFunction.Arn}/invocations"
+  #               passthroughBehavior: "when_no_match"
+  #               httpMethod: "GET"
+  #               type: "aws_proxy"          
+  #         /creature:
+  #           post:
+  #             x-amazon-apigateway-integration:
+  #               uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateCreatureFunction.Arn}/invocations"
+  #               passthroughBehavior: "when_no_match"
+  #               httpMethod: "POST"
+  #               type: "aws_proxy"
+  #           get:
+  #             x-amazon-apigateway-integration:
+  #               uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCreatureFunction.Arn}/invocations"
+  #               passthroughBehavior: "when_no_match"
+  #               httpMethod: "GET"
+  #               type: "aws_proxy"
+  #           put:
+  #             x-amazon-apigateway-integration:
+  #               uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutCreatureFunction.Arn}/invocations"
+  #               passthroughBehavior: "when_no_match"
+  #               httpMethod: "PUT"
+  #               type: "aws_proxy"
+  #           delete:
+  #             x-amazon-apigateway-integration:
+  #               uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteCreatureFunction.Arn}/invocations"
+  #               passthroughBehavior: "when_no_match"
+  #               httpMethod: "delete"
+  #               type: "aws_proxy"
+  #         /weapon:
+  #           post:
+  #             x-amazon-apigateway-integration:
+  #               uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateWeaponFunction.Arn}/invocations"
+  #               passthroughBehavior: "when_no_match"
+  #               httpMethod: "POST"
+  #               type: "aws_proxy"
+  #           get:
+  #             x-amazon-apigateway-integration:
+  #               uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetWeaponFunction.Arn}/invocations"
+  #               passthroughBehavior: "when_no_match"
+  #               httpMethod: "GET"
+  #               type: "aws_proxy"
+  #           put:
+  #             x-amazon-apigateway-integration:
+  #               uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutWeaponFunction.Arn}/invocations"
+  #               passthroughBehavior: "when_no_match"
+  #               httpMethod: "PUT"
+  #               type: "aws_proxy"
+  #           delete:
+  #             x-amazon-apigateway-integration:
+  #               uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteWeaponFunction.Arn}/invocations"
+  #               passthroughBehavior: "when_no_match"
+  #               httpMethod: "delete"
+  #               type: "aws_proxy"
