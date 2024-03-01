@@ -73,7 +73,7 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["DeleteCreatureFunction"]
 
-[function_build_definitions.d40fd6cb-03ed-40ff-bfbd-28cff02d12df]
+[function_build_definitions.eb2c297b-885f-44be-976c-2ac2d69587eb]
 codeuri = "C:\\Users\\bcasillas\\OneDrive - Neumont College of Computer Science\\Third Year\\Cloud\\Enchantorium\\Enchantorium_v1\\weapon\\post_weapon"
 runtime = "python3.12"
 architecture = "x86_64"
@@ -82,7 +82,7 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["CreateWeaponFunction"]
 
-[function_build_definitions.531b862b-fd0b-4635-b6b3-5b6ca564990e]
+[function_build_definitions.96ee87ef-d62b-49cb-9bfa-3cdaa743beb1]
 codeuri = "C:\\Users\\bcasillas\\OneDrive - Neumont College of Computer Science\\Third Year\\Cloud\\Enchantorium\\Enchantorium_v1\\weapon\\get_weapon"
 runtime = "python3.12"
 architecture = "x86_64"
@@ -91,7 +91,7 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["GetWeaponFunction"]
 
-[function_build_definitions.5b7f3a2e-2832-48a9-a473-1357764c1494]
+[function_build_definitions.e4c255c0-828e-44e9-8e6c-37c3f55fd1f3]
 codeuri = "C:\\Users\\bcasillas\\OneDrive - Neumont College of Computer Science\\Third Year\\Cloud\\Enchantorium\\Enchantorium_v1\\weapon\\put_weapon"
 runtime = "python3.12"
 architecture = "x86_64"
@@ -100,7 +100,7 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["PutWeaponFunction"]
 
-[function_build_definitions.f45f9e8d-17a8-4c2a-adb4-bea724dfdad8]
+[function_build_definitions.d0cdf644-7c4a-4520-87c9-e1b291a6f86e]
 codeuri = "C:\\Users\\bcasillas\\OneDrive - Neumont College of Computer Science\\Third Year\\Cloud\\Enchantorium\\Enchantorium_v1\\weapon\\delete_weapon"
 runtime = "python3.12"
 architecture = "x86_64"

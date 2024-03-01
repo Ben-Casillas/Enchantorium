@@ -10,14 +10,98 @@ Globals:
     Timeout: 3
     MemorySize: 128
 
-  Api:
-    Cors:
-      AllowMethods: "'GET,POST,DELETE,PUT,OPTIONS'"
-      AllowHeaders: "'content-type'"
-      AllowOrigin: "'*'"
-
 Resources:
-# User
+  # Define Message Queue
+  MailingQueue:
+    Type: AWS::SQS::Queue
+
+  # Single API Gateway
+  EnchantoriumApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      DefinitionBody:
+        swagger: "2.0"
+        info:
+          title: "Enchantorium API"
+        paths:
+          /user:
+            post:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateUserFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "POST"
+                type: "aws_proxy"
+            get:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetUserFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "GET"
+                type: "aws_proxy"
+            put:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutUserFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "PUT"
+                type: "aws_proxy"
+            delete:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteUserFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "delete"
+                type: "aws_proxy"
+          /creature:
+            post:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateCreatureFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "POST"
+                type: "aws_proxy"
+            get:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCreatureFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "GET"
+                type: "aws_proxy"
+            put:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutCreatureFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "PUT"
+                type: "aws_proxy"
+            delete:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteCreatureFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "delete"
+                type: "aws_proxy"
+          /weapon:
+            post:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateWeaponFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "POST"
+                type: "aws_proxy"
+            get:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetWeaponFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "GET"
+                type: "aws_proxy"
+            put:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutWeaponFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "PUT"
+                type: "aws_proxy"
+            delete:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteWeaponFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "delete"
+                type: "aws_proxy"
+
+  # User Lambda Functions
   CreateUserFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -27,12 +111,6 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: Enchantorium_Users
-    Events:
-      CreateUser:
-        Type: Api
-        Properties:
-          Path: /user
-          Method: post
 
   GetUserFunction:
     Type: AWS::Serverless::Function
@@ -43,12 +121,6 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: Enchantorium_Users
-    Events:
-      CreateUser:
-        Type: Api
-        Properties:
-          Path: /user
-          Method: get
 
   PutUserFunction:
     Type: AWS::Serverless::Function
@@ -59,12 +131,6 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: Enchantorium_Users
-    Events:
-      CreateUser:
-        Type: Api
-        Properties:
-          Path: /user
-          Method: put
 
   DeleteUserFunction:
     Type: AWS::Serverless::Function
@@ -75,14 +141,8 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: Enchantorium_Users
-    Events:
-      CreateUser:
-        Type: Api
-        Properties:
-          Path: /user
-          Method: delete
 
-# Creature
+  # Creature Lambda Functions
   CreateCreatureFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -92,12 +152,6 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: Enchantorium_Creatures
-    Events:
-      CreateCreature:
-        Type: Api
-        Properties:
-          Path: /creature
-          Method: post
 
   GetCreatureFunction:
     Type: AWS::Serverless::Function
@@ -108,12 +162,6 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: Enchantorium_Creatures
-    Events:
-      CreateCreature:
-        Type: Api
-        Properties:
-          Path: /creature
-          Method: get
 
   PutCreatureFunction:
     Type: AWS::Serverless::Function
@@ -124,12 +172,6 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: Enchantorium_Creatures
-    Events:
-      CreateCreature:
-        Type: Api
-        Properties:
-          Path: /creature
-          Method: put
 
   DeleteCreatureFunction:
     Type: AWS::Serverless::Function
@@ -140,14 +182,8 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: Enchantorium_Creatures
-    Events:
-      CreateCreature:
-        Type: Api
-        Properties:
-          Path: /creature
-          Method: delete
-  
-# Weapon
+
+  # Weapon Lambda Functions
   CreateWeaponFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -157,12 +193,6 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: Enchantorium_Weapons
-    Events:
-      CreateWeapon:
-        Type: Api
-        Properties:
-          Path: /weapon
-          Method: post
 
   GetWeaponFunction:
     Type: AWS::Serverless::Function
@@ -173,12 +203,6 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: Enchantorium_Weapons
-    Events:
-      CreateWeapon:
-        Type: Api
-        Properties:
-          Path: /weapon
-          Method: get
 
   PutWeaponFunction:
     Type: AWS::Serverless::Function
@@ -189,12 +213,6 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: Enchantorium_Weapons
-    Events:
-      CreateWeapon:
-        Type: Api
-        Properties:
-          Path: /weapon
-          Method: put
 
   DeleteWeaponFunction:
     Type: AWS::Serverless::Function
@@ -205,9 +223,3 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: Enchantorium_Weapons
-    Events:
-      CreateWeapon:
-        Type: Api
-        Properties:
-          Path: /weapon
-          Method: delete
