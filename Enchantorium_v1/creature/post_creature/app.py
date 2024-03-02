@@ -5,16 +5,14 @@ from uuid import uuid4
 import json
 
 #WORKING
-#WORKING
 region_name = getenv('APP_REGION')
 enchantorium_creatures = boto3.resource('dynamodb', region_name=region_name ).Table('Enchantorium_Creatures')
 
 
 def lambda_handler(event, context):
-    if( ("body" in event ) ):
+    if "body" in event and event["body"] is not None:
         event = json.loads(event["body"])
 
-    creature_id = str(uuid4())
     creature_id = str(uuid4())
     #seller id potentially not sure how to handle that just yet
     name = event["name"]

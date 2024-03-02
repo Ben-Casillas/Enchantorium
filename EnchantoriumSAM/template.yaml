@@ -16,7 +16,52 @@ Globals:
       AllowHeaders: "'content-type'"
       AllowOrigin: "'*'"
 
+
 Resources:
+  # LambdaExecutionRole:
+  #   Type: AWS::IAM::ROLE
+  #   Properties:
+  #     RoleName: LambdaExecutionRole
+  #     AssumedRolePolicyDocument:
+  #       Version: "2012-10-17"
+  #       Statement:
+  #         - Effect: Allow
+  #           Principal:
+  #             Service: lambda.amazonaws.com
+  #           Action: sts:AssumeRole
+  #     Policies:
+  #       - PolicyName: LambdaExecutionPolicy
+  #         PolicyDocument:
+  #           Version: "2012-10-17"
+  #           Statement:
+  #             - Effect: Allow
+  #               Action:
+  #                 - logs:CreateLogGroup
+  #                 - logs:CreateLogStream
+  #                 - logs:PutLogEvents
+  #               Resource: arn:aws:logs:us-east-2:254884408525:log-group:/aws/lambda/*
+  
+  # ApiGatewayExecutionRole:
+  #   Type: AWS::IAM::Role
+  #   Properties:
+  #     RoleName: ApiGatewayExecutionRole
+  #     AssumeRolePolicyDocument:
+  #       Version: "2012-10-17"
+  #       Statement:
+  #         - Effect: Allow
+  #           Principal:
+  #             Service: apigateway.amazonaws.com
+  #           Action: sts:AssumeRole
+  #     Policies:
+  #       - PolicyName: ApiGatewayExecutionPolicy
+  #         PolicyDocument:
+  #           Version: "2012-10-17"
+  #           Statement:
+  #             - Effect: Allow
+  #               Action:
+  #                 - lambda:InvokeFunction
+  #               Resource: "*"                
+
   # Define Message Queue
   MailingQueue:
     Type: AWS::SQS::Queue
@@ -62,7 +107,7 @@ Resources:
             Path: /user
             Method: get
 
-  GetUserFunctioWithId:
+  GetUserFunctionWithId:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ../Enchantorium_v1/user/get_user/
@@ -250,6 +295,7 @@ Resources:
       CodeUri: ../Enchantorium_v1/weapon/get_weapon/
       Handler: app.lambda_handler
       Runtime: python3.12
+      # Role: !GetAtt LambdaExecutionRole.Arn 
       Policies:
         - AmazonDynamoDBFullAccess
         - DynamoDBCrudPolicy:
@@ -322,3 +368,104 @@ Resources:
           Properties:
             Path: /weapon/{ID}
             Method: delete
+
+  EnchantoriumGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Test
+      DefinitionBody:
+        swagger: "2.0"
+        info:
+          title: EnchantoriumAPI
+          version: "1.0"
+        paths:
+          /user:
+            post:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateUserFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "POST"
+                type: "aws_proxy"
+              responses: {}
+            get:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetUserFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "GET"
+                type: "aws_proxy"
+              responses: {}
+            put:
+              x-amazon-apigateway-integration:
+                  uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutUserFunction.Arn}/invocations"
+                  passthroughBehavior: "when_no_match"
+                  httpMethod: "PUT"
+                  type: "aws_proxy"
+              responses: {}
+          /user/{id}:
+            delete:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteUserFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "DELETE"
+                type: "aws_proxy"
+              responses: {}
+          /creature:
+            post:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateCreatureFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "POST"
+                type: "aws_proxy"
+              responses: {}
+            get:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCreatureFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "GET"
+                type: "aws_proxy"
+              responses: {}
+            put:
+              x-amazon-apigateway-integration:
+                  uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutCreatureFunction.Arn}/invocations"
+                  passthroughBehavior: "when_no_match"
+                  httpMethod: "PUT"
+                  type: "aws_proxy"
+              responses: {}
+          /creature/{id}:
+            delete:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteCreatureFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "DELETE"
+                type: "aws_proxy"
+              responses: {}
+          /weapon:
+            post:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateWeaponFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "POST"
+                type: "aws_proxy"
+              responses: {}
+            get:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetWeaponFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "GET"
+                type: "aws_proxy"
+              responses: {}
+            put:
+              x-amazon-apigateway-integration:
+                  uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutWeaponFunction.Arn}/invocations"
+                  passthroughBehavior: "when_no_match"
+                  httpMethod: "PUT"
+                  type: "aws_proxy"
+              responses: {}
+          /weapon/{id}:
+            delete:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteWeaponFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "DELETE"
+                type: "aws_proxy"
+              responses: {}

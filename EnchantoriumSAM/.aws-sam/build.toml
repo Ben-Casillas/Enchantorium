@@ -8,7 +8,7 @@ architecture = "x86_64"
 handler = "app.lambda_handler"
 manifest_hash = ""
 packagetype = "Zip"
-functions = ["GetUserFunction", "GetUserFunctioWithId"]
+functions = ["GetUserFunction", "GetUserFunctionWithId"]
 
 [function_build_definitions.d84e4c85-2d01-4bf7-8a9e-63ef216efa79]
 codeuri = "C:\\Users\\bcasillas\\OneDrive - Neumont College of Computer Science\\Third Year\\Cloud\\Enchantorium\\Enchantorium_v1\\user\\put_user"

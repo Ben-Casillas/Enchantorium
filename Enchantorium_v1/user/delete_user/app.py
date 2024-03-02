@@ -18,7 +18,7 @@ def lambda_handler(event, context):
     id = path["ID"]
     output = enchantorium_users.delete_item(Key={"ID":id})
     return response(200, output)
-    
+
 
 def response(code, body):
     return {
@@ -27,5 +27,4 @@ def response(code, body):
             "Content-Type": "application/json"
             },
         "body": json.dumps(body),
-        "isBase64Encoded": False
     }

@@ -4,7 +4,7 @@ from os import getenv
 from uuid import uuid4
 import json
 
-#DONE
+#WORKING
 region_name = getenv('APP_REGION')
 enchantorium_weapons = boto3.resource('dynamodb', region_name=region_name ).Table('Enchantorium_Weapons')
 
@@ -14,9 +14,10 @@ def lambda_handler(event, context):
         event = json.loads(event["body"])
     id = event["ID"]
     name = event["name"]
-    trinket_type = event["type"]
-    secondary_effect = event["secondary_effect"]
-    regional_area = event["regional"]
+    trinket_type = event["trinket_type"] 
+    AOE_index = event["AOE_index"]
+    seller_ID = event["seller_ID"]
+    location = event ["location"]
 
     if "ID" is not event or id is None:
         response(400, "ID is required")
@@ -29,10 +30,12 @@ def lambda_handler(event, context):
         weapon["name"] = name
     if trinket_type is not None:
         weapon["trinket_type"] = trinket_type
-    if secondary_effect is not None:
-        weapon["secondary_effect"] = secondary_effect
-    if regional_area is not None:
-        weapon["regional_area"] = regional_area
+    if AOE_index is not None:
+        weapon["AOE_index"] = AOE_index
+    if seller_ID is not None:
+        weapon["seller_ID"] = seller_ID
+    if location is not None:
+        weapon["location"] = location
 
     enchantorium_weapons.put_item(Item=weapon)
     return response(200, weapon)

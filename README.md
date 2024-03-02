@@ -11,3 +11,27 @@ what happens once the buyer can the Companion or Trinket.
 
 # Credits
 Authors: Kadin Bierman, Ben Casillas
+
+# Sam commands
+sam validate (makes sure template.yaml is valid)
+sam build (prepare to be deployed)
+sam deploy (deploy into aws)
+sam delete (delete Stack)
+
+sam local start-api (run as images in docker locally)
+
+# Examples
+<!-- {
+  "ID": "6fb3b766-d25f-46e6-8db3-87e0d62b8f5c",
+  "username": "LeBron",
+  "password": "James",
+  "email": "huh@gmail.com",
+  "addresses": [
+    "123 Stupid Street PO BOX 321",
+    "567 Baller Avenue PO BOX 765"
+  ],
+  "banking": "123456789",
+  "title": "buyer"
+} -->
+
+<!--  -->

@@ -15,7 +15,7 @@ def lambda_handler(event, context):
             return response(200, enchantorium_weapons.scan()["Items"])
         if path is not None and "ID" in path:
             id = path["ID"]
-            output = enchantorium_weapons.get_item(Key={"Id":id})["Item"]
+            output = enchantorium_weapons.get_item(Key={"ID":id})["Item"]
             return response(200, output)
     return response(200, enchantorium_weapons.scan()["Items"])
 

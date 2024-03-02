@@ -9,6 +9,9 @@ region_name = getenv('APP_REGION')
 enchantorium_users = boto3.resource('dynamodb', region_name=region_name ).Table('Enchantorium_Users')
 
 def lambda_handler(event, context):
+    if "body" in event and event["body"] is not None:
+        event = json.loads(event["body"])
+
     user_id = str(uuid4())
     username = event["username"]
     password = event["password"]
