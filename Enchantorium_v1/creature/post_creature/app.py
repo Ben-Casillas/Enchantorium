@@ -31,6 +31,7 @@ def lambda_handler(event, context):
     return response(200, {"ID": creature_id})
 
 
+# make filter for type, price, quantity
 def insert(creature_id, name, age, weight, ship_from, description, type, price, quantity, image_key):
     formatted_price = '{:.2f}'.format(float(price))
     enchantorium_creatures.put_item(Item ={

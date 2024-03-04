@@ -127,4 +127,13 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["SQSProducer"]
 
+[function_build_definitions.28a8547c-c839-4104-a026-6ad235979776]
+codeuri = "C:\\Users\\bcasillas\\OneDrive - Neumont College of Computer Science\\Third Year\\Cloud\\Enchantorium\\Enchantorium_v1\\user\\sign_in"
+runtime = "python3.12"
+architecture = "x86_64"
+handler = "app.lambda_handler"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["SignInFunction"]
+
 [layer_build_definitions]

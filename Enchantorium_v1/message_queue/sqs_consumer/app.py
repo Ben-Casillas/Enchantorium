@@ -6,7 +6,8 @@ def lambda_handler(event, context):
 
 def process_message(message):
     try:
-        print(f"Here is the message body {message['body']}")
+        print(f"Payment for item:{message['body']} has been accepted")
+        return(f"Payment for item:{message['body']} has been accepted")
         #do stuff with it
     except Exception as err:
         print("ow")

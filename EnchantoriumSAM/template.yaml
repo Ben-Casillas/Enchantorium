@@ -12,7 +12,7 @@ Globals:
 
   Api:
     Cors:
-      AllowMethods: "'GET,POST,DELETE,PUT,OPTIONS'"
+      AllowMethods: "'GET,POST,DELETE,PUT'"
       AllowHeaders: "'content-type'"
       AllowOrigin: "'*'"
 
@@ -150,6 +150,21 @@ Resources:
           Properties:
             Path: /user/{ID}
             Method: delete
+
+  SignInFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/user/sign_in/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Architectures:
+        - x86_64
+      Events:
+        SignIn:
+          Type: Api
+          Properties:
+            Path: /user/signIn
+            Method: post
 
   # Creature Lambda Functions
   CreateCreatureFunction:
@@ -380,10 +395,10 @@ Resources:
               responses: {}
             put:
               x-amazon-apigateway-integration:
-                  uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutUserFunction.Arn}/invocations"
-                  passthroughBehavior: "when_no_match"
-                  httpMethod: "PUT"
-                  type: "aws_proxy"
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutUserFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "PUT"
+                type: "aws_proxy"
               responses: {}
           /user/{id}:
             delete:
@@ -410,10 +425,10 @@ Resources:
               responses: {}
             put:
               x-amazon-apigateway-integration:
-                  uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutCreatureFunction.Arn}/invocations"
-                  passthroughBehavior: "when_no_match"
-                  httpMethod: "PUT"
-                  type: "aws_proxy"
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutCreatureFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "PUT"
+                type: "aws_proxy"
               responses: {}
           /creature/{id}:
             delete:
@@ -440,10 +455,10 @@ Resources:
               responses: {}
             put:
               x-amazon-apigateway-integration:
-                  uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutWeaponFunction.Arn}/invocations"
-                  passthroughBehavior: "when_no_match"
-                  httpMethod: "PUT"
-                  type: "aws_proxy"
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutWeaponFunction.Arn}/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "PUT"
+                type: "aws_proxy"
               responses: {}
           /weapon/{id}:
             delete:

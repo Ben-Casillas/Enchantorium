@@ -23,6 +23,7 @@ def lambda_handler(event, context):
     return response(200, {"ID": trinket_id})
 
 
+# make one to sort by index
 def insert(trinket_id, name, trinket_type, AOE_index, seller_ID, location):
     enchantorium_weapons.put_item(Item={
         "ID": trinket_id,
