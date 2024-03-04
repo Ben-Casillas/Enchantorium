@@ -109,4 +109,22 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["CreateUserFunction"]
 
+[function_build_definitions.4e1f41fd-bb5f-499b-bcd7-88d63d0a7c2e]
+codeuri = "C:\\Users\\bcasillas\\OneDrive - Neumont College of Computer Science\\Third Year\\Cloud\\Enchantorium\\Enchantorium_v1\\message_queue\\sqs_consumer"
+runtime = "python3.12"
+architecture = "x86_64"
+handler = "app.lambda_handler"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["SQSConsumer"]
+
+[function_build_definitions.6e9a1561-59be-4837-9198-5d7ca0bb2200]
+codeuri = "C:\\Users\\bcasillas\\OneDrive - Neumont College of Computer Science\\Third Year\\Cloud\\Enchantorium\\Enchantorium_v1\\message_queue\\sqs_producer"
+runtime = "python3.12"
+architecture = "x86_64"
+handler = "app.lambda_handler"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["SQSProducer"]
+
 [layer_build_definitions]

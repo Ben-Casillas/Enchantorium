@@ -7,7 +7,7 @@ import json
 #WORKING
 region_name = getenv('APP_REGION')
 enchantorium_creatures = boto3.resource('dynamodb', region_name=region_name ).Table('Enchantorium_Creatures')
-
+s3_client = boto3.client('s3')
 
 def lambda_handler(event, context):
     if "body" in event and event["body"] is not None:
@@ -23,13 +23,15 @@ def lambda_handler(event, context):
     type = event["type"] #mounts, "slaves"(helpers), guards (SS), livestock, #mounts, "slaves"(helpers), guards (SS), livestock
     price = event["price"]
     quantity = event["quantity"]
+    image = event["image"]
 
-    insert(creature_id, name, age, weight, ship_from, description, type, price, quantity)
+    image_key = upload_image_to_s3(creature_id, image)
+
+    insert(creature_id, name, age, weight, ship_from, description, type, price, quantity, image_key)
     return response(200, {"ID": creature_id})
 
 
-def insert(creature_id, name, age, weight, ship_from, description, type, price, quantity):
-
+def insert(creature_id, name, age, weight, ship_from, description, type, price, quantity, image_key):
     formatted_price = '{:.2f}'.format(float(price))
     enchantorium_creatures.put_item(Item ={
         "ID": creature_id,
@@ -40,8 +42,15 @@ def insert(creature_id, name, age, weight, ship_from, description, type, price, 
         "description": description,
         "type": type,
         "price": formatted_price,
-        "quantity": quantity
+        "quantity": quantity,
+        "image_key": image_key
     })
+
+def upload_image_to_s3(creature_id, image):
+    bucket_name = "creature-bucket"
+    image_key = f'images/{creature_id}.jpg'
+    s3.client.put_object(Bucket=bucket_name, Key=image_key, Body=image)
+    return image_key
 
 def response(code, body):
     return{

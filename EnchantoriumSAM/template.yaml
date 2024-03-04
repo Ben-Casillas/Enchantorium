@@ -16,55 +16,39 @@ Globals:
       AllowHeaders: "'content-type'"
       AllowOrigin: "'*'"
 
-
 Resources:
-  # LambdaExecutionRole:
-  #   Type: AWS::IAM::ROLE
-  #   Properties:
-  #     RoleName: LambdaExecutionRole
-  #     AssumedRolePolicyDocument:
-  #       Version: "2012-10-17"
-  #       Statement:
-  #         - Effect: Allow
-  #           Principal:
-  #             Service: lambda.amazonaws.com
-  #           Action: sts:AssumeRole
-  #     Policies:
-  #       - PolicyName: LambdaExecutionPolicy
-  #         PolicyDocument:
-  #           Version: "2012-10-17"
-  #           Statement:
-  #             - Effect: Allow
-  #               Action:
-  #                 - logs:CreateLogGroup
-  #                 - logs:CreateLogStream
-  #                 - logs:PutLogEvents
-  #               Resource: arn:aws:logs:us-east-2:254884408525:log-group:/aws/lambda/*
-  
-  # ApiGatewayExecutionRole:
-  #   Type: AWS::IAM::Role
-  #   Properties:
-  #     RoleName: ApiGatewayExecutionRole
-  #     AssumeRolePolicyDocument:
-  #       Version: "2012-10-17"
-  #       Statement:
-  #         - Effect: Allow
-  #           Principal:
-  #             Service: apigateway.amazonaws.com
-  #           Action: sts:AssumeRole
-  #     Policies:
-  #       - PolicyName: ApiGatewayExecutionPolicy
-  #         PolicyDocument:
-  #           Version: "2012-10-17"
-  #           Statement:
-  #             - Effect: Allow
-  #               Action:
-  #                 - lambda:InvokeFunction
-  #               Resource: "*"                
-
-  # Define Message Queue
   MailingQueue:
     Type: AWS::SQS::Queue
+    Properties:
+      QueueName: MailingQueue
+
+  # SQS Consumer Lambda Function
+  SQSConsumer:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/message_queue/sqs_consumer/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Events:
+        MailingQueueEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt MailingQueue.Arn
+            BatchSize: 10
+
+  SQSProducer:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/message_queue/sqs_producer/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Events:
+        InvokeFunction:
+          Type: Api
+          Properties:
+            Path: /invoke
+            Method: post
+      Role: !GetAtt SQSProducerRole.Arn
 
   # User Lambda Functions
   CreateUserFunction:
@@ -469,3 +453,24 @@ Resources:
                 httpMethod: "DELETE"
                 type: "aws_proxy"
               responses: {}
+
+  SQSProducerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: SQSProducerPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: sqs:SendMessage
+                Resource: !GetAtt MailingQueue.Arn
+
+#aws cloudformation update-stack --stack-name EnchantoriumSAM --template-body "C:\Users\bcasillas\OneDrive - Neumont College of Computer Science\Third Year\Cloud\Enchantorium\EnchantoriumSAM\template.yaml" --capabilities CAPABILITY_NAMED_IAM
