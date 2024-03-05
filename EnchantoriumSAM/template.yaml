@@ -17,6 +17,71 @@ Globals:
       AllowOrigin: "'*'"
 
 Resources:
+  
+  Enchantorium_Views:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: Enchantorium_Views
+      KeySchema:
+        - AttributeName: ID
+          AttributeType: S
+  
+  Enchantorium_Creatures:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: Enchantorium_Creatures
+      KeySchema:
+        - AttributeName: ID
+          AttributeType: S
+  
+  Enchantorium_Users:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: Enchantorium_Users
+      KeySchema:
+        - AttributeName: ID
+          AttributeType: S
+  
+  Enchantorium_Weapons:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: Enchantorium_Weapons
+      KeySchema:
+        - AttributeName: ID
+          AttributeType: S
+
+  ViewQueue:
+    Type: 'AWS::SQS::Queue'
+    Properties:
+      QueueName: ViewQueue
+
+  ViewProducer:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: ../Enchantorium_v1/message_queue/view_producer/
+      Runtime: python3.12
+      Handler: app.lambda_handler
+      Events:
+        InvokeFunction:
+          Type: Api
+          Properties:
+            Path: /view
+            Method: post
+      Role: !GetAtt ViewProducerRole.Arn
+
+  ViewConsumer:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: ../Enchantorium_v1/message_queue/view_consumer/
+      Runtime: python3.12
+      Handler: app.lambda_handler
+      Events:
+        ViewQueueEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt ViewQueue.Arn
+      Role: !GetAtt ViewProducerRole.Arn
+
   MailingQueue:
     Type: AWS::SQS::Queue
     Properties:
@@ -489,5 +554,30 @@ Resources:
               - Effect: Allow
                 Action: sqs:SendMessage
                 Resource: !GetAtt MailingQueue.Arn
+
+  ViewProducerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: ViewProducerPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: 
+                  - sqs:SendMessage
+                  - sqs:GetQueueAttributes
+                  - sqs:ReceiveMessage
+                  - sqs:DeleteMessage
+                  - sqs:DeleteMessageBatch
+                  - sqs:GetQueueUrl
+                Resource: !GetAtt ViewQueue.Arn
 
 #aws cloudformation update-stack --stack-name EnchantoriumSAM --template-body "C:\Users\bcasillas\OneDrive - Neumont College of Computer Science\Third Year\Cloud\Enchantorium\EnchantoriumSAM\template.yaml" --capabilities CAPABILITY_NAMED_IAM
