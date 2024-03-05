@@ -28,7 +28,7 @@ def lambda_handler(event, context):
     
     if payload_seller == creature_item["seller_ID"]:
         output = enchantorium_creatures.delete_item(Key={"ID":id})
-        return response(200, "creature no longer being sold")
+        return response(200, output)
 
 def response(code, body):
     return {

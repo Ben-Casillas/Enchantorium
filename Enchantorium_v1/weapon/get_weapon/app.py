@@ -4,7 +4,7 @@ from os import getenv
 from uuid import uuid4
 import json
 
-#DONE
+#working in test console
 region_name = getenv('APP_REGION')
 enchantorium_weapons = boto3.resource('dynamodb', region_name=region_name ).Table('Enchantorium_Weapons')
 
