@@ -5,6 +5,7 @@ from uuid import uuid4
 import json
 from decimal import Decimal
 
+#working in test console
 region_name = getenv('APP_REGION')
 enchantorium_creatures = boto3.resource('dynamodb', region_name=region_name ).Table('Enchantorium_Creatures')
 s3_client = boto3.client('s3')

@@ -1,57 +1,46 @@
-import datetime
 import boto3
 import jwt
+import json
+from datetime import datetime, timedelta
 
-# Secret key used to sign and verify JWT tokens
+#working in test console
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('Enchantorium_Users')
 SECRET_KEY = "Ravioli"
-dynamodb = boto3.client("dynamodb")
-
-event = {
-    "username": "LeBron",
-    "password": "James"
-}
+TOKEN_EXPIRE_TIME = 3600  # Token expiration time in seconds (1 hour)
 
 def lambda_handler(event, context):
-    # Define token payload containing user information
     username = event["username"]
     password = event["password"]
-    if not username or not password:
-        print("failed")
-        return {"error": "Missing username or password"}
-    user = verify_creds(username, password)
-    
-    if user:
-        print("yea")
-        payload = {
-            "user_id": user_id,
-            "role": user_role,
-            "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)  # Token expiration time
-        }
-    
-        # Generate JWT token
-        token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
-        return token
-    else:
-        return{"Error": "Invalid username or password"}
-
-def verify_creds(username, password):
-    response = dynamodb.query(
-        TableName="Enchantorium_Users",
-        KeyConditionExpression="username = :u",
-        ExpressionAttributeValues={
-            ":u": {"S": username}
-        }
+    response = table.scan(
+        FilterExpression=boto3.dynamodb.conditions.Attr('username').eq(username)
     )
+    items = response['Items']
+    user = items[0]
 
-    if "Items" in response and len(response["Items"]) > 0:
-        for user in response["Items"]:
-            if "password" in user and user["password"]["S"] == password:
-                return {
-                    "user_id": user["ID"]["S"],
-                    "title": user["title"]["S"]  # Assuming user role is stored in an attribute named 'role'
-                }
+    if user["password"] == password:
+        expire_time = datetime.utcnow() + timedelta(seconds=TOKEN_EXPIRE_TIME)
+        payload = {
+            "user_ID": user["ID"],
+            "username": username,
+            "password": user["password"],
+            "title": user["title"],
+            "exp": expire_time
+        }
+        token = jwt.encode(
+            payload, SECRET_KEY, algorithm="HS256",
+        )
+        return httpResponse(200, token)
 
-    return None
+    return httpResponse(404, "Invalid Username or Password")
 
-result = lambda_handler(event, None)
-print(result)
+
+def httpResponse(code, body):
+    response_data = {
+        "statusCode": code,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": json.dumps(body)
+    }
+    return response_data

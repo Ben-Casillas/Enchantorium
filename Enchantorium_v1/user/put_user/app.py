@@ -4,7 +4,7 @@ from os import getenv
 from uuid import uuid4
 import json
 
-#WORKING
+##working in test console NO AUTH
 region_name = getenv('APP_REGION')
 enchantorium_users = boto3.resource('dynamodb', region_name=region_name ).Table('Enchantorium_Users')
 
