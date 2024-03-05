@@ -18,37 +18,49 @@ Globals:
 
 Resources:
   
-  Enchantorium_Views:
+  EnchantoriumViews:
     Type: 'AWS::DynamoDB::Table'
     Properties:
       TableName: Enchantorium_Views
+      AttributeDefinitions:
+        - AttributeName: "ID"
+          AttributeType: "S"
       KeySchema:
-        - AttributeName: ID
-          AttributeType: S
+        - AttributeName: "ID"
+          KeyType: "HASH"
   
-  Enchantorium_Creatures:
+  EnchantoriumCreatures:
     Type: 'AWS::DynamoDB::Table'
     Properties:
       TableName: Enchantorium_Creatures
+      AttributeDefinitions:
+        - AttributeName: "ID"
+          AttributeType: "S"
       KeySchema:
-        - AttributeName: ID
-          AttributeType: S
+        - AttributeName: "ID"
+          KeyType: "HASH"
   
-  Enchantorium_Users:
+  EnchantoriumUsers:
     Type: 'AWS::DynamoDB::Table'
     Properties:
       TableName: Enchantorium_Users
+      AttributeDefinitions:
+        - AttributeName: "ID"
+          AttributeType: "S"
       KeySchema:
-        - AttributeName: ID
-          AttributeType: S
+        - AttributeName: "ID"
+          KeyType: "HASH"
   
-  Enchantorium_Weapons:
+  EnchantoriumWeapons:
     Type: 'AWS::DynamoDB::Table'
     Properties:
       TableName: Enchantorium_Weapons
+      AttributeDefinitions:
+        - AttributeName: "ID"
+          AttributeType: "S"
       KeySchema:
-        - AttributeName: ID
-          AttributeType: S
+        - AttributeName: "ID"
+          KeyType: "HASH"
 
   ViewQueue:
     Type: 'AWS::SQS::Queue'
