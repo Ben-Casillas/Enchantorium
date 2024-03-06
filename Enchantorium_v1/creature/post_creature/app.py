@@ -14,6 +14,7 @@ SECRET_KEY = 'Ravioli'
 def lambda_handler(event, context):
     if "body" in event and event["body"] is not None:
         event = json.loads(event["body"])
+        
     if "headers" not in event or "Authorization" not in event["headers"]:
         return response(401, "Unauthorized")
     

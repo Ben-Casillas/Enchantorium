@@ -17,50 +17,49 @@ Globals:
       AllowOrigin: "'*'"
 
 Resources:
+  # EnchantoriumViews:
+  #   Type: 'AWS::DynamoDB::Table'
+  #   Properties:
+  #     TableName: Enchantorium_Views
+  #     AttributeDefinitions:
+  #       - AttributeName: "ID"
+  #         AttributeType: "S"
+  #     KeySchema:
+  #       - AttributeName: "ID"
+  #         KeyType: "HASH"
   
-  EnchantoriumViews:
-    Type: 'AWS::DynamoDB::Table'
-    Properties:
-      TableName: Enchantorium_Views
-      AttributeDefinitions:
-        - AttributeName: "ID"
-          AttributeType: "S"
-      KeySchema:
-        - AttributeName: "ID"
-          KeyType: "HASH"
+  # EnchantoriumCreatures:
+  #   Type: 'AWS::DynamoDB::Table'
+  #   Properties:
+  #     TableName: Enchantorium_Creatures
+  #     AttributeDefinitions:
+  #       - AttributeName: "ID"
+  #         AttributeType: "S"
+  #     KeySchema:
+  #       - AttributeName: "ID"
+  #         KeyType: "HASH"
   
-  EnchantoriumCreatures:
-    Type: 'AWS::DynamoDB::Table'
-    Properties:
-      TableName: Enchantorium_Creatures
-      AttributeDefinitions:
-        - AttributeName: "ID"
-          AttributeType: "S"
-      KeySchema:
-        - AttributeName: "ID"
-          KeyType: "HASH"
+  # EnchantoriumUsers:
+  #   Type: 'AWS::DynamoDB::Table'
+  #   Properties:
+  #     TableName: Enchantorium_Users
+  #     AttributeDefinitions:
+  #       - AttributeName: "ID"
+  #         AttributeType: "S"
+  #     KeySchema:
+  #       - AttributeName: "ID"
+  #         KeyType: "HASH"
   
-  EnchantoriumUsers:
-    Type: 'AWS::DynamoDB::Table'
-    Properties:
-      TableName: Enchantorium_Users
-      AttributeDefinitions:
-        - AttributeName: "ID"
-          AttributeType: "S"
-      KeySchema:
-        - AttributeName: "ID"
-          KeyType: "HASH"
-  
-  EnchantoriumWeapons:
-    Type: 'AWS::DynamoDB::Table'
-    Properties:
-      TableName: Enchantorium_Weapons
-      AttributeDefinitions:
-        - AttributeName: "ID"
-          AttributeType: "S"
-      KeySchema:
-        - AttributeName: "ID"
-          KeyType: "HASH"
+  # EnchantoriumWeapons:
+  #   Type: 'AWS::DynamoDB::Table'
+  #   Properties:
+  #     TableName: Enchantorium_Weapons
+  #     AttributeDefinitions:
+  #       - AttributeName: "ID"
+  #         AttributeType: "S"
+  #     KeySchema:
+  #       - AttributeName: "ID"
+  #         KeyType: "HASH"
 
   ViewQueue:
     Type: 'AWS::SQS::Queue'
@@ -446,6 +445,26 @@ Resources:
           Properties:
             Path: /weapon/{ID}
             Method: delete
+
+  SearchWeaponsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/weapon/get_search/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Policies:
+        - AmazonDynamoDBFullAccess
+        - DynamoDBCrudPolicy:
+            TableName: Enchantorium_Weapons
+      Architectures:
+        - x86_64
+      Events:
+        DeleteWeapon:
+          Type: Api
+          Properties:
+            Path: /weapon/search
+            Method: get
+
 
   EnchantoriumGateway:
     Type: AWS::Serverless::Api

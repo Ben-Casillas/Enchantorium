@@ -136,4 +136,31 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["SignInFunction"]
 
+[function_build_definitions.df605064-7a02-4c5e-b5f5-810af74cc57f]
+codeuri = "C:\\Users\\bcasillas\\OneDrive - Neumont College of Computer Science\\Third Year\\Cloud\\Enchantorium\\Enchantorium_v1\\message_queue\\view_producer"
+runtime = "python3.12"
+architecture = "x86_64"
+handler = "app.lambda_handler"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["ViewProducer"]
+
+[function_build_definitions.1971f15a-8df1-442e-853d-c9086d2eb7ae]
+codeuri = "C:\\Users\\bcasillas\\OneDrive - Neumont College of Computer Science\\Third Year\\Cloud\\Enchantorium\\Enchantorium_v1\\message_queue\\view_consumer"
+runtime = "python3.12"
+architecture = "x86_64"
+handler = "app.lambda_handler"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["ViewConsumer"]
+
+[function_build_definitions.203a55ec-3923-431d-9472-77bceadf16a2]
+codeuri = "C:\\Users\\bcasillas\\OneDrive - Neumont College of Computer Science\\Third Year\\Cloud\\Enchantorium\\Enchantorium_v1\\weapon\\get_search"
+runtime = "python3.12"
+architecture = "x86_64"
+handler = "app.lambda_handler"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["SearchWeaponsFunction"]
+
 [layer_build_definitions]
