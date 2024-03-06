@@ -4,24 +4,22 @@ from decimal import Decimal
 
 # working in test console
 dynamodb = boto3.resource('dynamodb')
-enchantorium_weapons = dynamodb.Table('Enchantorium_Weapons')
+enchantorium_weapons = dynamodb.Table('Enchantorium_Creatures')
 
 def lambda_handler(event, context):
     query_params = event.get("queryStringParameters", {})
     name = query_params.get("name")
     type = query_params.get("type")
-    
-    # Check if "price" parameter is supplied, otherwise default to None
+
+
     price_param = query_params.get("price")
     max_price = Decimal(price_param) if price_param is not None else None
 
     filtered_items = [
         item for item in enchantorium_weapons.scan()["Items"]
         if (not name or name.lower() in item.get("name", "").lower()) and 
-        (type is None or type.lower() in [type.lower() for type in item.get("trinket_type", [])]) and
+        (type is None or type.lower() == item.get("type", "").lower()) and 
         (max_price is None or Decimal(item.get("price", 0)) <= max_price)
-        
-        #(tags is None or tags.lower() in [tag.lower() for tag in item.get("tags", [])])
     ]
     return response(200, filtered_items, serialize_decimals)
 
