@@ -12,7 +12,7 @@ Globals:
 
   Api:
     Cors:
-      AllowMethods: "'GET,POST,DELETE,PUT'"
+      AllowMethods: "'GET,POST,DELETE,PUT,OPTIONS'"
       AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
       AllowOrigin: "'*'"
 
@@ -65,6 +65,26 @@ Resources:
     Type: 'AWS::SQS::Queue'
     Properties:
       QueueName: ViewQueue
+      
+  GetViewFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/message_queue/get_views/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Policies:
+        - AmazonDynamoDBFullAccess
+        - DynamoDBCrudPolicy:
+            TableName: 
+              Enchantorium_Views
+      Architectures:
+        - x86_64
+      Events:
+        GetUser:
+          Type: Api
+          Properties:
+            Path: /view
+            Method: get
 
   ViewProducer:
     Type: 'AWS::Serverless::Function'

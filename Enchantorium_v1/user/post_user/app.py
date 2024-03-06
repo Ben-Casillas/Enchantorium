@@ -47,11 +47,13 @@ def db_insert(user_id, username, password, email, addresses, banking, title):
 
 def response(code, body):
     return {
-        "statusCode": code,
-        "headers": {
+            'statusCode': code,
+            'headers': {
+                "Access-Control-Allow-Headers" : "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+                "Access-Control-Allow-Origin": "*", 
+                "Access-Control-Allow-Methods": "GET,POST,DELETE,PUT,OPTIONS",
             "Content-Type": "application/json"
-            },
-        "body": json.dumps(body),
-        "isBase64Encoded": False
+        },
+        "body": json.dumps(body)
     }
 

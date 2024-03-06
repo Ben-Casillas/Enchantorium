@@ -14,9 +14,21 @@ def lambda_handler(event, context):
         print(response)
         return {
             'statusCode': 200,
-            'body': json.dumps('Message sent successfully!')
-        }
+            'headers': {
+                "Access-Control-Allow-Headers" : "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+                "Access-Control-Allow-Origin": "*", 
+                "Access-Control-Allow-Methods": "GET,POST,DELETE,PUT,OPTIONS",
+            "Content-Type": "application/json"
+        },
+        "body": json.dumps("Success")
+    }
     return {
-        'statusCode': 401,
-        'body': json.dumps('Error in data.')
+            'statusCode': 401,
+            'headers': {
+                "Access-Control-Allow-Headers" : "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+                "Access-Control-Allow-Origin": "*", 
+                "Access-Control-Allow-Methods": "GET,POST,DELETE,PUT,OPTIONS",
+            "Content-Type": "application/json"
+        },
+        "body": json.dumps("Error")
     }
