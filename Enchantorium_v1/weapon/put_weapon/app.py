@@ -14,6 +14,7 @@ def lambda_handler(event, context):
         event = json.loads(event["body"])
     id = event["ID"]
     name = event["name"]
+    price = event["price"]
     trinket_type = event["trinket_type"] 
     AOE_index = event["AOE_index"]
     seller_ID = event["seller_ID"]
@@ -28,6 +29,8 @@ def lambda_handler(event, context):
         response(404, "No such trinket found")
     if name is not None:
         weapon["name"] = name
+    if price is not None:
+        weapon["price"] = price
     if trinket_type is not None:
         weapon["trinket_type"] = trinket_type
     if AOE_index is not None:
