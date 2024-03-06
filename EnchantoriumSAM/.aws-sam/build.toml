@@ -163,4 +163,13 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["SearchWeaponsFunction"]
 
+[function_build_definitions.ca692704-eb2c-4eb8-a431-f23cf1d042a2]
+codeuri = "C:\\Users\\bcasillas\\OneDrive - Neumont College of Computer Science\\Third Year\\Cloud\\Enchantorium\\Enchantorium_v1\\creature\\get_search"
+runtime = "python3.12"
+architecture = "x86_64"
+handler = "app.lambda_handler"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["SearchCreaturesFunction"]
+
 [layer_build_definitions]

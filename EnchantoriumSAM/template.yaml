@@ -365,6 +365,25 @@ Resources:
             Path: /creature/{ID}
             Method: delete
 
+  SearchCreaturesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../Enchantorium_v1/creature/get_search/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Policies:
+        - AmazonDynamoDBFullAccess
+        - DynamoDBCrudPolicy:
+            TableName: Enchantorium_Creatures
+      Architectures:
+        - x86_64
+      Events:
+        DeleteWeapon:
+          Type: Api
+          Properties:
+            Path: /creature/search
+            Method: get
+
   # Weapon Lambda Functions
   CreateWeaponFunction:
     Type: AWS::Serverless::Function
